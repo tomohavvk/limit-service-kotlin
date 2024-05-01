@@ -3,6 +3,7 @@ plugins {
     id("org.springframework.boot") version "3.2.5"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.jetbrains.kotlin.plugin.spring") version "1.9.23"
+    id("application")
 
     kotlin("jvm") version "1.9.23"
     kotlin("plugin.lombok") version "1.9.23"
@@ -31,6 +32,10 @@ dependencies {
     runtimeOnly("io.r2dbc:r2dbc-h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
+}
+
+application {
+    mainClass.set("com.tomohavvk.limit.ApplicationKt")
 }
 
 kotlinLombok {

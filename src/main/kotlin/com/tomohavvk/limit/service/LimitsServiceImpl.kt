@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class LimitsServiceImpl() : LimitsService {
+class LimitsServiceImpl : LimitsService {
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     override suspend fun create(request: CreateLimitRequest): Either<AppError, CreateLimitResponse> {
