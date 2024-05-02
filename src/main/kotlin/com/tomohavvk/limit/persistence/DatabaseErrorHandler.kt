@@ -13,6 +13,8 @@ interface DatabaseErrorHandler {
     val log: Logger
 
     fun <T> handleError(error: Throwable): Mono<AppFlow<T>> {
+        log.error("Database layer error: {}", error.message, error)
+
         return when (error) {
             is DuplicateKeyException ->
                 Mono.just(Either.Left(NotUniqueError("Entity already exists in the system")))

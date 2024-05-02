@@ -5,8 +5,8 @@ import arrow.core.Either
 import arrow.core.flatMap
 import com.tomohavvk.limit.AppFlow
 import com.tomohavvk.limit.error.ValidationError
-import com.tomohavvk.limit.protocol.CreateLimitRequest
-import com.tomohavvk.limit.protocol.LimitView
+import com.tomohavvk.limit.protocol.request.CreateLimitRequest
+import com.tomohavvk.limit.protocol.view.LimitView
 import com.tomohavvk.limit.service.LimitsService
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -25,11 +25,11 @@ class CreateLimitRequestValidator {
 }
 
 @Component
-class Handlers(
+class LimitHandlers(
     val service: LimitsService,
     val validator: CreateLimitRequestValidator,
 ) {
-    suspend fun createLimit(req: ServerRequest): AppFlow<LimitView> {
+    suspend fun create(req: ServerRequest): AppFlow<LimitView> {
         return validator.validate(req.awaitBody(CreateLimitRequest::class))
             .flatMap { validated -> service.create(validated) }
     }

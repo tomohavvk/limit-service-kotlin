@@ -2,7 +2,7 @@
     NonEmptySetSerializer::class
 )
 
-package com.tomohavvk.limit.protocol
+package com.tomohavvk.limit.protocol.request
 
 import arrow.core.NonEmptySet
 import arrow.core.serialization.NonEmptySetSerializer

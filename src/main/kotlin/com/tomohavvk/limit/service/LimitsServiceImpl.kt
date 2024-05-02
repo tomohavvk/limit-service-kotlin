@@ -6,8 +6,8 @@ import com.tomohavvk.limit.error.AppError
 import com.tomohavvk.limit.persistence.LimitRepository
 import com.tomohavvk.limit.persistence.entity.Limit
 import com.tomohavvk.limit.persistence.entity.LimitEntity
-import com.tomohavvk.limit.protocol.CreateLimitRequest
-import com.tomohavvk.limit.protocol.LimitView
+import com.tomohavvk.limit.protocol.request.CreateLimitRequest
+import com.tomohavvk.limit.protocol.view.LimitView
 import kotlinx.coroutines.reactor.awaitSingle
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
