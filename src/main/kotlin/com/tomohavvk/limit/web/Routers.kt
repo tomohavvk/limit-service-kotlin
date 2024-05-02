@@ -1,9 +1,11 @@
 package com.tomohavvk.limit.web
 
 
-import arrow.core.Either
-import com.tomohavvk.limit.error.AppError
+import com.tomohavvk.limit.AppFlow
 import com.tomohavvk.limit.error.ValidationError
+import com.tomohavvk.limit.protocol.LimitView
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.Json
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
@@ -20,13 +22,23 @@ class Routers(val handlers: Handlers) {
     fun api() = coRouter {
         "/api/v1/".nest {
             accept(APPLICATION_JSON).nest {
-                POST("limits") { request -> handleResponse(HttpStatus.CREATED, handlers.createLimit(request)) }
+                POST("limits") { request ->
+                    handleResponse(HttpStatus.CREATED, handlers.createLimit(request))
+                }
+            }
+            accept(APPLICATION_JSON).nest {
+                GET("limits") { _ ->
+                    val limits = handlers.findAll()
+                        .map { list -> Json.encodeToString(ListSerializer(LimitView.serializer()), list) }
+
+                    handleResponse(HttpStatus.OK, limits)
+                }
             }
         }
     }
 
-    suspend fun <T : Any> handleResponse(statusIfOk: HttpStatusCode, either: Either<AppError, T>): ServerResponse {
-        return either.fold({ error ->
+    suspend fun <T : Any> handleResponse(statusIfOk: HttpStatusCode, flow: AppFlow<T>): ServerResponse {
+        return flow.fold({ error ->
             val statusCode = when (error) {
                 is ValidationError -> HttpStatus.BAD_REQUEST
                 else -> HttpStatus.INTERNAL_SERVER_ERROR
@@ -34,10 +46,10 @@ class Routers(val handlers: Handlers) {
 
             ServerResponse.status(statusCode).contentType(APPLICATION_JSON)
                 .bodyValueAndAwait(mapOf("error" to error.reason))
-        }, { request ->
+        }, { body ->
 
             ServerResponse.status(statusIfOk).contentType(APPLICATION_JSON)
-                .bodyValueAndAwait(request)
+                .bodyValueAndAwait(body)
         })
     }
 }

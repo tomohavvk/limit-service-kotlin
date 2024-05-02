@@ -5,4 +5,5 @@ sealed interface AppError {
 }
 
 data class ValidationError(override val reason: String) : AppError
-data class SomeAnotherError(override val reason: String) : AppError
+data class DatabaseError(override val reason: String) : AppError
+data class NotUniqueError(override val reason: String) : AppError

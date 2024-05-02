@@ -3,20 +3,18 @@
     UUIDSerializer::class
 )
 
-package com.tomohavvk.limit.protocol
+package com.tomohavvk.limit.persistence.entity
 
 import arrow.core.NonEmptySet
 import arrow.core.serialization.NonEmptySetSerializer
 import com.tomohavvk.limit.protocol.Common.*
+import com.tomohavvk.limit.protocol.CreateLimitRequest
 import com.tomohavvk.limit.serializers.UUIDSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
-import java.util.*
-
 
 @Serializable
-data class CreateLimitResponse(
-    val uuid: UUID,
+data class Limit(
     val name: String,
     val description: String,
     val limitOn: LimitOn,
@@ -25,9 +23,8 @@ data class CreateLimitResponse(
     val criteria: NonEmptySet<Criterion>
 ) {
     companion object {
-        fun fromRequest(uuid: UUID, request: CreateLimitRequest): CreateLimitResponse {
-            return CreateLimitResponse(
-                uuid = uuid,
+        fun fromRequest(request: CreateLimitRequest): Limit {
+            return Limit(
                 name = request.name,
                 description = request.description,
                 limitOn = request.limitOn,
