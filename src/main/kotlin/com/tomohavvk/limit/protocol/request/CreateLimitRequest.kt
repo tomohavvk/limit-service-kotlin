@@ -15,6 +15,7 @@ import kotlinx.serialization.UseSerializers
 data class CreateLimitRequest(
     val name: String,
     val description: String,
+    val currency: Currency,
     val limitOn: LimitOn,
     val groupBy: NonEmptySet<String>,
     val filterBy: NonEmptySet<Filter>,

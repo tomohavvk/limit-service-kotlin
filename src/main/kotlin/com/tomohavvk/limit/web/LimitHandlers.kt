@@ -7,7 +7,7 @@ import com.tomohavvk.limit.AppFlow
 import com.tomohavvk.limit.error.ValidationError
 import com.tomohavvk.limit.protocol.request.CreateLimitRequest
 import com.tomohavvk.limit.protocol.view.LimitView
-import com.tomohavvk.limit.service.LimitsService
+import com.tomohavvk.limit.service.LimitService
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.awaitBody
@@ -26,7 +26,7 @@ class CreateLimitRequestValidator {
 
 @Component
 class LimitHandlers(
-    val service: LimitsService,
+    val service: LimitService,
     val validator: CreateLimitRequestValidator,
 ) {
     suspend fun create(req: ServerRequest): AppFlow<LimitView> {

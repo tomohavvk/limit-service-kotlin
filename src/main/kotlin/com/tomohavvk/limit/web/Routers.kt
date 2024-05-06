@@ -3,6 +3,7 @@ package com.tomohavvk.limit.web
 
 import com.tomohavvk.limit.AppFlow
 import com.tomohavvk.limit.error.ValidationError
+import com.tomohavvk.limit.protocol.CheckResult
 import com.tomohavvk.limit.protocol.view.LimitView
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
@@ -16,18 +17,23 @@ import org.springframework.web.reactive.function.server.bodyValueAndAwait
 import org.springframework.web.reactive.function.server.coRouter
 
 @Configuration
-class Routers(val limitHandlers: LimitHandlers, val transactionHandlers: TransactionHandlers) {
+class Routers(
+    val limitHandlers: LimitHandlers,
+    val transactionHandlers: TransactionHandlers,
+    val checkHandlers: CheckHandlers
+) {
 
     @Bean
     fun api() = coRouter {
-        "/api/v1/".nest {
+        "/api/v1/limits".nest {
             accept(APPLICATION_JSON).nest {
-                POST("limits") { request ->
+                POST("") { request ->
                     handleResponse(HttpStatus.CREATED, limitHandlers.create(request))
                 }
             }
+
             accept(APPLICATION_JSON).nest {
-                GET("limits") { _ ->
+                GET("") { _ ->
                     val limits = limitHandlers.findAll()
                         .map { list -> Json.encodeToString(ListSerializer(LimitView.serializer()), list) }
 
@@ -36,7 +42,17 @@ class Routers(val limitHandlers: LimitHandlers, val transactionHandlers: Transac
             }
 
             accept(APPLICATION_JSON).nest {
-                POST("transactions") { request ->
+                POST("check") { request ->
+                    val checks = checkHandlers.check(request)
+                        .map { list -> Json.encodeToString(ListSerializer(CheckResult.serializer()), list) }
+                    handleResponse(HttpStatus.OK, checks)
+                }
+            }
+        }
+
+        "/api/v1/transactions".nest {
+            accept(APPLICATION_JSON).nest {
+                POST("") { request ->
                     handleResponse(HttpStatus.CREATED, transactionHandlers.persist(request))
                 }
             }

@@ -28,6 +28,7 @@ dependencies {
     implementation("io.arrow-kt:arrow-core:1.2.4")
     implementation("io.arrow-kt:arrow-core-serialization:1.2.4")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("io.zeko:zeko-sql-builder:1.4.0")
 
     implementation("org.postgresql:r2dbc-postgresql:1.0.1.RELEASE")
     implementation("org.postgresql:postgresql:42.5.4")

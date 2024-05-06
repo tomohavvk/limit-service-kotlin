@@ -9,6 +9,7 @@ package com.tomohavvk.limit.persistence.entity
 import arrow.core.NonEmptySet
 import arrow.core.serialization.NonEmptySetSerializer
 import com.tomohavvk.limit.protocol.Common.*
+import com.tomohavvk.limit.protocol.Common.Currency
 import com.tomohavvk.limit.protocol.request.CreateLimitRequest
 import com.tomohavvk.limit.serializers.UUIDSerializer
 import kotlinx.serialization.Serializable
@@ -26,6 +27,7 @@ data class LimitEntity(
 data class Limit(
     val name: String,
     val description: String,
+    val currency: Currency,
     val limitOn: LimitOn,
     val groupBy: NonEmptySet<String>,
     val filterBy: NonEmptySet<Filter>,
@@ -36,6 +38,7 @@ data class Limit(
             return Limit(
                 name = request.name,
                 description = request.description,
+                currency = request.currency,
                 limitOn = request.limitOn,
                 groupBy = request.groupBy,
                 filterBy = request.filterBy,
