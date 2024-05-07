@@ -29,9 +29,6 @@ class CheckRepositoryRepositoryImpl(connectionFactory: ConnectionFactory) : Chec
 
         return db.sql(query)
             .map { row ->
-                println(row.get("limitUuid"))
-                println(row.get("criterionId"))
-
                 CheckResult(
                     limitUuid = row.get("limitUuid", UUID::class.java),
                     criterionId = row.get("criterionId", UUID::class.java)

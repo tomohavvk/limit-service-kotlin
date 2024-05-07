@@ -3,7 +3,6 @@ package com.tomohavvk.limit.web
 
 import com.tomohavvk.limit.AppFlow
 import com.tomohavvk.limit.error.ValidationError
-import com.tomohavvk.limit.protocol.CheckResult
 import com.tomohavvk.limit.protocol.view.LimitView
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
@@ -40,20 +39,21 @@ class Routers(
                     handleResponse(HttpStatus.OK, limits)
                 }
             }
-
-            accept(APPLICATION_JSON).nest {
-                POST("check") { request ->
-                    val checks = checkHandlers.check(request)
-                        .map { list -> Json.encodeToString(ListSerializer(CheckResult.serializer()), list) }
-                    handleResponse(HttpStatus.OK, checks)
-                }
-            }
         }
 
         "/api/v1/transactions".nest {
             accept(APPLICATION_JSON).nest {
                 POST("") { request ->
                     handleResponse(HttpStatus.CREATED, transactionHandlers.persist(request))
+                }
+            }
+
+        }
+
+        "/api/v1/check".nest {
+            accept(APPLICATION_JSON).nest {
+                POST("") { request ->
+                    handleResponse(HttpStatus.OK, checkHandlers.check(request))
                 }
             }
 

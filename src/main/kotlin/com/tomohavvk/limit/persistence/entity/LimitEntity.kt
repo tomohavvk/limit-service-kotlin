@@ -9,40 +9,36 @@ package com.tomohavvk.limit.persistence.entity
 import arrow.core.NonEmptySet
 import arrow.core.serialization.NonEmptySetSerializer
 import com.tomohavvk.limit.protocol.Common.*
-import com.tomohavvk.limit.protocol.Common.Currency
 import com.tomohavvk.limit.protocol.request.CreateLimitRequest
 import com.tomohavvk.limit.serializers.UUIDSerializer
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
+import java.time.LocalDateTime
 import java.util.*
 
 
 data class LimitEntity(
     val uuid: UUID,
-    val limit: Limit
-)
-
-
-@Serializable
-data class Limit(
     val name: String,
     val description: String,
-    val currency: Currency,
     val limitOn: LimitOn,
-    val groupBy: NonEmptySet<String>,
-    val filterBy: NonEmptySet<Filter>,
-    val criteria: NonEmptySet<Criterion>
+    val currencies: NonEmptySet<String>,
+    val dynamicFilter: NonEmptySet<String>,
+    val staticFilter: NonEmptySet<StaticFilter>,
+    val criteria: NonEmptySet<Criterion>,
+    val createdAt: LocalDateTime
 ) {
     companion object {
-        fun fromRequest(request: CreateLimitRequest): Limit {
-            return Limit(
+        fun fromRequest(uuid: UUID, request: CreateLimitRequest): LimitEntity {
+            return LimitEntity(
+                uuid = uuid,
                 name = request.name,
                 description = request.description,
-                currency = request.currency,
                 limitOn = request.limitOn,
-                groupBy = request.groupBy,
-                filterBy = request.filterBy,
-                criteria = request.criteria
+                currencies = request.currencies,
+                dynamicFilter = request.dynamicFilter,
+                staticFilter = request.staticFilter,
+                criteria = request.criteria,
+                createdAt = LocalDateTime.now()
             )
         }
     }

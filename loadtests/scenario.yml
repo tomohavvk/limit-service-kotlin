@@ -1,0 +1,31 @@
+modules:
+  local:
+    sequential: true
+  jmeter:
+    gui: false
+    properties:
+      baseurl: http://localhost:8080/api/v1
+
+execution:
+  - scenario: persist-transactions
+    concurrency: 10
+    iterations: 10000
+
+scenarios:
+  persist-transactions:
+    requests:
+      - url: ${__P(baseurl)}/transactions
+        method: POST
+        headers:
+          Content-Type: application/json
+        body: >
+          {
+              "uuid": "${__UUID()}",
+              "processedAt": ${__time(,)},
+              "amount": 100,
+              "currency": "UAH",
+              "cardHash": "123456782131242343242344432",
+              "terminal": "737943f7-65a5-4447-9806-9f9ca6ad1b44",
+              "mcc": "6012",
+              "gateway": "monobank"
+          }

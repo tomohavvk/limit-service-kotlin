@@ -14,7 +14,7 @@ import java.util.*
 @Serializable
 data class PersistTransactionRequest(
     val uuid: UUID,
-    val terminalId: UUID,
+    val terminal: UUID,
     val amount: Int,
     val currency: String,
     val cardHash: String,

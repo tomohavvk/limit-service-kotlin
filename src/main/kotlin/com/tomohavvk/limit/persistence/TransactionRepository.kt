@@ -28,13 +28,13 @@ class TransactionRepositoryImpl(connectionFactory: ConnectionFactory) : Transact
 
     override fun insert(entity: TransactionEntity): Mono<AppFlow<Boolean>> {
         val query =
-            """INSERT INTO transactions (uuid, terminalId, amount, currency, cardHash, mcc, gateway, processedAt)
-                 VALUES (:uuid, :terminalId, :amount, :currency, :cardHash, :mcc, :gateway, :processedAt) 
+            """INSERT INTO transactions (uuid, terminal, amount, currency, cardHash, mcc, gateway, processedAt)
+                 VALUES (:uuid, :terminal, :amount, :currency, :cardHash, :mcc, :gateway, :processedAt) 
                  ON CONFLICT (uuid) DO NOTHING"""
 
         return db.sql(query)
             .bind("uuid", entity.uuid)
-            .bind("terminalId", entity.terminalId)
+            .bind("terminal", entity.terminal)
             .bind("amount", entity.amount)
             .bind("currency", entity.currency)
             .bind("cardHash", entity.cardHash)

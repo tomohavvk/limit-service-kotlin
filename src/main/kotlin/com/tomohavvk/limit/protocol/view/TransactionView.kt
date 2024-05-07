@@ -16,7 +16,7 @@ import java.util.*
 @Serializable
 data class TransactionView(
     val uuid: UUID,
-    val terminalId: UUID,
+    val terminal: UUID,
     val amount: Int,
     val currency: String,
     val cardHash: String,
@@ -28,7 +28,7 @@ data class TransactionView(
         fun fromEntity(entity: TransactionEntity): TransactionView {
             return TransactionView(
                 uuid = entity.uuid,
-                terminalId = entity.terminalId,
+                terminal = entity.terminal,
                 amount = entity.amount,
                 currency = entity.currency,
                 cardHash = entity.cardHash,

@@ -19,14 +19,11 @@ class Common {
     }
 
     @Serializable
-    data class Currency(val property: String, val values: NonEmptySet<String>)
-
-    @Serializable
     data class LimitOn(val property: String, val aggregate: Aggregate)
 
     @Serializable
-    data class Filter(val property: String, val values: NonEmptySet<String>)
+    data class StaticFilter(val property: String, val values: NonEmptySet<String>)
 
     @Serializable
-    data class Criterion(val uuid: UUID, val limit: Int, val interval: Int)
+    data class Criterion(val uuid: UUID, val limit: Int, val interval: String)
 }

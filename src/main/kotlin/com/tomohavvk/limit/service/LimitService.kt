@@ -4,7 +4,6 @@ import arrow.core.Either
 import com.tomohavvk.limit.AppFlow
 import com.tomohavvk.limit.error.AppError
 import com.tomohavvk.limit.persistence.LimitRepository
-import com.tomohavvk.limit.persistence.entity.Limit
 import com.tomohavvk.limit.persistence.entity.LimitEntity
 import com.tomohavvk.limit.protocol.request.CreateLimitRequest
 import com.tomohavvk.limit.protocol.view.LimitView
@@ -25,7 +24,7 @@ class LimitServiceImpl(val limitRepository: LimitRepository) : LimitService {
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     override suspend fun create(request: CreateLimitRequest): Either<AppError, LimitView> {
-        val entity = LimitEntity(UUID.randomUUID(), Limit.fromRequest(request))
+        val entity = LimitEntity.fromRequest(UUID.randomUUID(), request)
 
         return limitRepository.insert(entity)
             .map { res -> res.map { LimitView.fromEntity(entity) } }

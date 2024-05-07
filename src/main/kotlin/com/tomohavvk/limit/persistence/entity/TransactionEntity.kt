@@ -7,7 +7,7 @@ import java.util.*
 
 data class TransactionEntity(
     val uuid: UUID,
-    val terminalId: UUID,
+    val terminal: UUID,
     val amount: Int,
     val currency: String,
     val cardHash: String,
@@ -19,7 +19,7 @@ data class TransactionEntity(
         fun fromRequest(request: PersistTransactionRequest): TransactionEntity {
             return TransactionEntity(
                 uuid = request.uuid,
-                terminalId = request.terminalId,
+                terminal = request.terminal,
                 amount = request.amount,
                 currency = request.currency,
                 cardHash = request.cardHash,
